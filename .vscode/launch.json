@@ -11,7 +11,8 @@
             "mode": "auto",
             "program": "${workspaceFolder}/main.go",
             "args": [
-                "README.md"
+                "README.md",
+                "README.md",
             ]
         }
     ]

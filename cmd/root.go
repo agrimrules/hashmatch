@@ -21,6 +21,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
@@ -33,21 +34,19 @@ var rootCmd = &cobra.Command{
 .`,
 	Run: func(cmd *cobra.Command, args []string) {
 		exitcode := 0
-
-		f, err := os.Open(args[0])
-		if err != nil {
-			log.Fatal(err)
-			os.Exit(exitcode - 1)
-		}
-		defer f.Close()
-
-		h := md5.New()
-		if _, err := io.Copy(h, f); err != nil {
-			os.Exit(exitcode - 1)
-		}
-
-		data := [][]string{
-			{f.Name(), fmt.Sprintf("%x", h.Sum(nil))},
+		data := [][]string{}
+		for _, v := range args {
+			f, err := os.Open(v)
+			if err != nil {
+				log.Fatal(err)
+				os.Exit(exitcode - 1)
+			}
+			defer f.Close()
+			h := md5.New()
+			if _, err := io.Copy(h, f); err != nil {
+				os.Exit(exitcode - 1)
+			}
+			data = append(data, []string{f.Name(), fmt.Sprintf("%x", h.Sum(nil))})
 		}
 
 		table := tablewriter.NewWriter(os.Stdout)
@@ -59,6 +58,13 @@ var rootCmd = &cobra.Command{
 		table.SetHeaderColor(tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.Bold, tablewriter.BgGreenColor},
 			tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.Bold, tablewriter.BgGreenColor})
 
+		if len(data) >= 2 {
+			if strings.Compare(data[0][1], data[1][1]) == 0 {
+				table.SetFooter([]string{"Files match ✅", ""})
+			} else {
+				table.SetFooter([]string{"Files don't match ❌", ""})
+			}
+		}
 		table.Render()
 		os.Exit(exitcode)
 	},
