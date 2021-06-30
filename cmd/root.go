@@ -27,6 +27,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var version = "dev"
+
 var rootCmd = &cobra.Command{
 	Use:   "hashmatch",
 	Short: "print hashes of files in tabular form",
