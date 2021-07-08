@@ -30,3 +30,13 @@ func GetMD5ForFiles(files []string) []HashResults {
 	}
 	return results
 }
+
+func HashesAreEqual(hr1 []HashResults, hr2 []HashResults) (bool, []HashResults) {
+	mismatches := []HashResults{}
+	for i, v := range hr1 {
+		if v != hr2[i] {
+			mismatches = append(mismatches, v)
+		}
+	}
+	return len(mismatches) == 0, mismatches
+}

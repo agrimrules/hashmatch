@@ -41,10 +41,22 @@ var rootCmd = &cobra.Command{
 		}
 		switch len(args) {
 		case 2:
-			data := utils.GetMD5ForFiles(args)
-			table := utils.CreateTable(data)
-			table.Render()
-			os.Exit(exitcode)
+			if utils.IsDirectory(args[0]) && utils.IsDirectory(args[1]) {
+				d1 := utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[0]))
+				d2 := utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[1]))
+				results, diff := utils.HashesAreEqual(d1, d2)
+				fmt.Printf(" %t ", results)
+				table := utils.CreateTable(diff)
+				table.Render()
+				os.Exit(exitcode)
+			} else if !utils.IsDirectory(args[0]) && !utils.IsDirectory(args[1]) {
+				data := utils.GetMD5ForFiles(args)
+				table := utils.CreateTable(data)
+				table.Render()
+				os.Exit(exitcode)
+			}
+			fmt.Println("Can only compare two folders or two files")
+
 		default:
 			fmt.Println("Invalid Arguments")
 			os.Exit(-1)
