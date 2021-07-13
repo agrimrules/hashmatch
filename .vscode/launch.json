@@ -14,6 +14,17 @@
                 "README.md",
                 "README.md",
             ]
+        },
+        {
+            "name": "test with dirs",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/main.go",
+            "args": [
+                "/home/agrim/Downloads/kubernetes-master",
+                "/home/agrim/Downloads/kubernetes-master-1",
+            ]
         }
     ]
 }
