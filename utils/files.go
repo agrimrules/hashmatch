@@ -20,9 +20,11 @@ func ReturnFilesInFolder(folder string) []string {
 	files := []string{}
 	godirwalk.Walk(folder, &godirwalk.Options{
 		Callback: func(osPathname string, directoryEntry *godirwalk.Dirent) error {
-			files = append(files, osPathname)
+			if directoryEntry.IsRegular() {
+				files = append(files, osPathname)
+			}
 			return nil
 		}, Unsorted: false,
 	})
-	return files[1:]
+	return files
 }

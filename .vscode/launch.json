@@ -22,8 +22,8 @@
             "mode": "auto",
             "program": "${workspaceFolder}/main.go",
             "args": [
-                "utils",
-                "utils",
+                "/home/agrim/Downloads/kubernetes-master",
+                "/home/agrim/Downloads/kubernetes-master-1",
             ]
         }
     ]

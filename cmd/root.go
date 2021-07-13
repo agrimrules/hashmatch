@@ -44,10 +44,13 @@ var rootCmd = &cobra.Command{
 			if utils.IsDirectory(args[0]) && utils.IsDirectory(args[1]) {
 				d1 := utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[0]))
 				d2 := utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[1]))
-				results, diff := utils.HashesAreEqual(d1, d2)
-				fmt.Printf(" %t ", results)
-				table := utils.CreateTable(diff)
-				table.Render()
+				areEqual, diff := utils.HashesAreEqual(d1, d2)
+				if !areEqual {
+					table := utils.CreateDirTable(diff)
+					table.Render()
+					os.Exit(exitcode)
+				}
+				fmt.Println("Files match ✅")
 				os.Exit(exitcode)
 			} else if !utils.IsDirectory(args[0]) && !utils.IsDirectory(args[1]) {
 				data := utils.GetMD5ForFiles(args)
