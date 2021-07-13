@@ -10,6 +10,8 @@
 
 A simple CLI tool written to verify files based on various hashing algorithms.
 
+<p align="center"><img src=".github/hashmatch.gif?raw=true"/></p>
+
 ## Installation
 Hashmatch is cross platform and available on Linux, macOS and Windows.
 
