@@ -5,7 +5,7 @@
 <img alt="GitHub go.mod Go version" src="https://img.shields.io/github/go-mod/go-version/agrimrules/hashmatch">
 <a href="https://goreportcard.com/report/github.com/agrimrules/hashmatch"><img src="https://goreportcard.com/badge/github.com/agrimrules/hashmatch" alt="Go Report Card" /a>
 <a href="https://github.com/agrimrules/hashmatch/blob/main/LICENSE"><img src="https://img.shields.io/github/license/agrimrules/hashmatch" alt="License"></a>
-<a href="https://github.com/agrimrules/hashmatch/actions/workflows/release.yml"><img srv="https://github.com/agrimrules/hashmatch/actions/workflows/release.yml/badge.svg"></a>
+<a href="https://github.com/agrimrules/hashmatch/actions/workflows/release.yml"><img src="https://github.com/agrimrules/hashmatch/actions/workflows/release.yml/badge.svg"></a>
 </p>
 
 A simple CLI tool written to verify files based on various hashing algorithms.
