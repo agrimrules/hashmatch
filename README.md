@@ -31,7 +31,7 @@ Can be used to see if both files are the same via matching md5 sums
 ```shell
 hashmatch /path/to/directory1 /path/to/directory2
 ```
-Will traverse both directories and indicate if all files within them match or now.
+Will traverse both directories and indicate if all files within them match or not.
 
 ## License
 
