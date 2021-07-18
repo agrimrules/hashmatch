@@ -26,6 +26,7 @@ import (
 
 var version = "dev"
 var v bool
+var h string
 
 var rootCmd = &cobra.Command{
 	Use:   "hashmatch",
@@ -34,27 +35,47 @@ var rootCmd = &cobra.Command{
 .`,
 	Run: func(cmd *cobra.Command, args []string) {
 		exitcode := 0
-		// data := []utils.HashResults{}
+		isArg0Directory := false
+		isArg1Directory := false
+
+		if len(args) >= 1 && args[0] != "" {
+			isArg0Directory = utils.IsDirectory(args[0])
+		}
+		if len(args) >= 2 && args[1] != "" {
+			isArg1Directory = utils.IsDirectory(args[1])
+		}
 		if v {
 			fmt.Println(version)
 			os.Exit(exitcode)
 		}
 		switch len(args) {
+		case 1:
+			var d []utils.HashResults
+			if isArg0Directory {
+				d = utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[0]), h)
+			} else {
+				d = utils.GetMD5ForFiles(args, h)
+			}
+			table := utils.CreateTable(d, h)
+			table.ClearFooter()
+			table.Render()
+			os.Exit(exitcode)
+
 		case 2:
-			if utils.IsDirectory(args[0]) && utils.IsDirectory(args[1]) {
-				d1 := utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[0]))
-				d2 := utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[1]))
+			if isArg0Directory && isArg1Directory {
+				d1 := utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[0]), h)
+				d2 := utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[1]), h)
 				areEqual, diff := utils.HashesAreEqual(d1, d2)
 				if !areEqual {
-					table := utils.CreateDirTable(diff)
+					table := utils.CreateDirTable(diff, h)
 					table.Render()
 					os.Exit(exitcode)
 				}
 				fmt.Println("Files match ✅")
 				os.Exit(exitcode)
-			} else if !utils.IsDirectory(args[0]) && !utils.IsDirectory(args[1]) {
-				data := utils.GetMD5ForFiles(args)
-				table := utils.CreateTable(data)
+			} else if !isArg0Directory && !isArg1Directory {
+				data := utils.GetMD5ForFiles(args, h)
+				table := utils.CreateTable(data, h)
 				table.Render()
 				os.Exit(exitcode)
 			}
@@ -71,5 +92,6 @@ var rootCmd = &cobra.Command{
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	rootCmd.Flags().BoolVarP(&v, "version", "v", false, "Print version")
+	rootCmd.Flags().StringVarP(&h, "hash", "", "md5sum", "Specify hash algorithm to use")
 	cobra.CheckErr(rootCmd.Execute())
 }
