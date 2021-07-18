@@ -8,9 +8,9 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-func CreateTable(rows []HashResults) *tablewriter.Table {
+func CreateTable(rows []HashResults, algo string) *tablewriter.Table {
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"File", "md5sum"})
+	table.SetHeader([]string{"File", algo})
 	table.SetHeaderColor(tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.Bold, tablewriter.BgGreenColor},
 		tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.Bold, tablewriter.BgGreenColor})
 
@@ -27,9 +27,9 @@ func CreateTable(rows []HashResults) *tablewriter.Table {
 	return table
 }
 
-func CreateDirTable(rows []HashResults) *tablewriter.Table {
+func CreateDirTable(rows []HashResults, algo string) *tablewriter.Table {
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"Source File", "md5sum", "Destination File", "md5sum"})
+	table.SetHeader([]string{"Source File", algo, "Destination File", algo})
 	table.SetHeaderColor(tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.Bold, tablewriter.BgGreenColor},
 		tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.Bold, tablewriter.BgGreenColor},
 		tablewriter.Colors{tablewriter.FgBlackColor, tablewriter.Bold, tablewriter.BgGreenColor},

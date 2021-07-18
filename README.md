@@ -24,6 +24,10 @@ go get -u github.com/agrimrules/hashmatch
 
 ## Usage
 ```shell
+hashmatch file1 --hash crc32
+```
+Is used to return the hash value of the particular file using the specified algorithm (default: md5sum, options: sha1, sha256, crc32)
+```shell
 hashmatch file1 file2
 ```
 Can be used to see if both files are the same via matching md5 sums
