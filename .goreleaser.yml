@@ -32,3 +32,15 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+brews:
+  - name: hashmatch
+    tap:
+      owner: agrimrules
+      name: homebrew-hashmatch
+    commit_author:
+      name: Agrim Asthana
+      email: dev@agrimasthana.com
+    folder: Formula
+    description: A simple cli tool to generate file hashes and match them.
+    test: |
+      system "hashmatch -v"
