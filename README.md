@@ -49,7 +49,7 @@ hashmatch /path/to/directory1 /path/to/directory2
 Will traverse both directories and indicate if all files within them match or not.
 
 ```shell
-hashmatch -o json
+hashmatch file1 -o json
 ```
 The `-o` flag can be used to output the results in JSON format
 
