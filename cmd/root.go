@@ -17,6 +17,7 @@ limitations under the License.
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -27,6 +28,7 @@ import (
 var version = "dev"
 var v bool
 var h string
+var o string
 
 var rootCmd = &cobra.Command{
 	Use:   "hashmatch",
@@ -52,32 +54,33 @@ var rootCmd = &cobra.Command{
 		case 1:
 			var d []utils.HashResults
 			if isArg0Directory {
-				d = utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[0]), h)
+				d = utils.GetHashesForFiles(utils.ReturnFilesInFolder(args[0]), h)
 			} else {
-				d = utils.GetMD5ForFiles(args, h)
+				d = utils.GetHashesForFiles(args, h)
 			}
-			table := utils.CreateTable(d, h)
-			table.ClearFooter()
-			table.Render()
-			os.Exit(exitcode)
+			utils.HandleOutput(d, h, o, false, true)
 
 		case 2:
 			if isArg0Directory && isArg1Directory {
-				d1 := utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[0]), h)
-				d2 := utils.GetMD5ForFiles(utils.ReturnFilesInFolder(args[1]), h)
+				d1 := utils.GetHashesForFiles(utils.ReturnFilesInFolder(args[0]), h)
+				d2 := utils.GetHashesForFiles(utils.ReturnFilesInFolder(args[1]), h)
 				areEqual, diff := utils.HashesAreEqual(d1, d2)
 				if !areEqual {
-					table := utils.CreateDirTable(diff, h)
-					table.Render()
-					os.Exit(exitcode)
+					utils.HandleOutput(diff, h, o, true, false)
 				}
-				fmt.Println("Files match ✅")
+				if o == "table" {
+					fmt.Println("Files match ✅")
+				}
+				if o == "json" {
+					op, _ := json.MarshalIndent(struct {
+						Matched bool `json:"matched"`
+					}{Matched: true}, "", " ")
+					fmt.Println(string(op))
+				}
 				os.Exit(exitcode)
 			} else if !isArg0Directory && !isArg1Directory {
-				data := utils.GetMD5ForFiles(args, h)
-				table := utils.CreateTable(data, h)
-				table.Render()
-				os.Exit(exitcode)
+				data := utils.GetHashesForFiles(args, h)
+				utils.HandleOutput(data, h, o, false, false)
 			}
 			fmt.Println("Can only compare two folders or two files")
 
@@ -93,5 +96,6 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	rootCmd.Flags().BoolVarP(&v, "version", "v", false, "Print version")
 	rootCmd.Flags().StringVarP(&h, "hash", "", "md5sum", "Specify hash algorithm to use")
+	rootCmd.Flags().StringVarP(&o, "output", "o", "table", "Specify the output format to use")
 	cobra.CheckErr(rootCmd.Execute())
 }

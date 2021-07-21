@@ -12,12 +12,21 @@ import (
 	"os"
 )
 
+// HashResults store the computed hash of a filename
 type HashResults struct {
-	filename string
-	hash     string
+	Filename string `json:"filename"`
+	Hash     string `json:"hash"`
 }
 
-func GetMD5ForFiles(files []string, algo string) []HashResults {
+// JSONHashResults are a json representation of the results
+type JSONHashResults struct {
+	Results []HashResults `json:"results"`
+	Match   bool          `json:"matched"`
+	Algo    string        `json:"algo"`
+}
+
+// GetHashesForFiles returns the hashes for a given set of files
+func GetHashesForFiles(files []string, algo string) []HashResults {
 	results := []HashResults{}
 	var h hash.Hash
 	switch algo {
@@ -51,8 +60,12 @@ func GetMD5ForFiles(files []string, algo string) []HashResults {
 
 func HashesAreEqual(hr1 []HashResults, hr2 []HashResults) (bool, []HashResults) {
 	mismatches := []HashResults{}
+	if len(hr1) != len(hr2) {
+		fmt.Println("Number of files do not match")
+		os.Exit(-1)
+	}
 	for i, v := range hr1 {
-		if v.hash != hr2[i].hash {
+		if v.Hash != hr2[i].Hash {
 			mismatches = append(mismatches, v, hr2[i])
 		}
 	}
