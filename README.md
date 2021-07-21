@@ -15,6 +15,17 @@ A simple CLI tool written to verify files based on various hashing algorithms.
 ## Installation
 Hashmatch is cross platform and available on Linux, macOS and Windows.
 
+* Install on macOS via [Homebrew](https://brew.sh/) 
+```shell
+brew install agrimrules/hashmatch/hashmatch
+```
+
+* Install on Windows via [Scoop](https://scoop.sh/)
+```shell
+scoop bucket add agrimrules https://github.com/agrimrules/scoop-bucket.git
+scoop install agrimrules/hashmatch
+```
+
 * Install via the golang toolchain
 ```shell
 go get -u github.com/agrimrules/hashmatch
@@ -36,6 +47,11 @@ Can be used to see if both files are the same via matching md5 sums
 hashmatch /path/to/directory1 /path/to/directory2
 ```
 Will traverse both directories and indicate if all files within them match or not.
+
+```shell
+hashmatch -o json
+```
+The `-o` flag can be used to output the results in JSON format
 
 ## License
 
