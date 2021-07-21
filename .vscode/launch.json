@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Package",
+            "name": "two files",
             "type": "go",
             "request": "launch",
             "mode": "auto",
@@ -13,10 +13,12 @@
             "args": [
                 "README.md",
                 "README.md",
+                "-o",
+                "json"
             ]
         },
         {
-            "name": "test with dirs",
+            "name": "two dirs",
             "type": "go",
             "request": "launch",
             "mode": "auto",
@@ -24,6 +26,32 @@
             "args": [
                 "/home/agrim/Downloads/kubernetes-master",
                 "/home/agrim/Downloads/kubernetes-master-1",
+                "-o",
+                "json"
+            ]
+        },
+        {
+            "name": "one dir",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/main.go",
+            "args": [
+                "/home/agrim/Downloads/kubernetes-master",
+                "-o",
+                "json"
+            ]
+        },
+        {
+            "name": "one file",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/main.go",
+            "args": [
+                "README.md",
+                "-o",
+                "json"
             ]
         }
     ]
