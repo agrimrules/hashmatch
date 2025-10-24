@@ -52,11 +52,12 @@ brews:
     test: |
       system "hashmatch -v"
 scoops:
-  repository:
-    owner: agrimrules
-    name: scoop-bucket
-  commit_author:
-    name: Agrim Asthana
-    email: dev@agrimasthana.com
-  commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
-  license: Apache-2.0
+  -
+    repository:
+      owner: agrimrules
+      name: scoop-bucket
+    commit_author:
+      name: Agrim Asthana
+      email: dev@agrimasthana.com
+    commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
+    license: Apache-2.0
