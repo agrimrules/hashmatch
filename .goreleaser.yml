@@ -1,6 +1,8 @@
 # This is an example .goreleaser.yml file with some sane defaults.
 # Make sure to check the documentation at http://goreleaser.com
 version: 2
+project_name: hashmatch
+
 before:
   hooks:
     # You may remove this if you don't use go modules.
@@ -17,12 +19,16 @@ builds:
     ldflags:
       - -s -w -X go.agrim.dev/hashmatch/cmd.version=v{{.Version}}
 archives:
-  - replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
+  - name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}amd64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats: ["zip"]
 checksum:
   name_template: 'checksums.txt'
 snapshot:
@@ -35,18 +41,18 @@ changelog:
       - '^test:'
 brews:
   - name: hashmatch
-    tap:
+    repository:
       owner: agrimrules
       name: homebrew-hashmatch
     commit_author:
       name: Agrim Asthana
       email: dev@agrimasthana.com
-    folder: Formula
+    directory: Formula
     description: A simple cli tool to generate file hashes and match them.
     test: |
       system "hashmatch -v"
-scoop:
-  bucket:
+scoops:
+  repository:
     owner: agrimrules
     name: scoop-bucket
   commit_author:
