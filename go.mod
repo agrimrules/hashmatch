@@ -1,4 +1,4 @@
-module github.com/agrimrules/hashmatch
+module go.agrim.dev/hashmatch
 
 go 1.16
 

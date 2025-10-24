@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/agrimrules/hashmatch/cmd"
+import "go.agrim.dev/hashmatch/cmd"
 
 func main() {
 	cmd.Execute()
