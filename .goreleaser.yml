@@ -23,6 +23,8 @@ builds:
       - s390x
     goarm:
       - 7
+    flags:
+      - -trimpath
     ldflags:
       - -s -w -X go.agrim.dev/hashmatch/cmd.version=v{{.Version}}
 
@@ -32,6 +34,8 @@ builds:
     goarch:
       - amd64
       - arm64
+    flags:
+      - -trimpath
     ldflags:
       - -s -w -X go.agrim.dev/hashmatch/cmd.version=v{{.Version}}
 
@@ -41,21 +45,29 @@ builds:
     goarch:
       - amd64
       - arm64
+    flags:
+      - -trimpath
     ldflags:
       - -s -w -X go.agrim.dev/hashmatch/cmd.version=v{{.Version}}
 
 archives:
-  - name_template: >-
-      {{ .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}amd64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
+  - &ARCHIVE
+    # Can be used to change the archive formats for specific GOOSs.
+    # Most common use case is to archive as zip on Windows.
+    # Default is empty.
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Version }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ end }}"
     format_overrides:
       - goos: windows
-        formats: ["zip"]
+        format: zip
+    files:
+      - README.md
+      - LICENSE
     allow_different_binary_count: true
+  -
+    << : *ARCHIVE
+    id: unversioned
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ end }}"
+    wrap_in_directory: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ end }}"
 
 checksum:
   name_template: 'checksums.txt'
