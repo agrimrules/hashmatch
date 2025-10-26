@@ -1,6 +1,6 @@
 module go.agrim.dev/hashmatch
 
-go 1.25.0
+go 1.25
 
 require (
 	github.com/karrick/godirwalk v1.16.1
