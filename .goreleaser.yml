@@ -12,12 +12,38 @@ before:
 builds:
   - env:
       - CGO_ENABLED=0
+  - id: linux
     goos:
       - linux
-      - windows
-      - darwin
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - ppc64le
+      - s390x
+    goarm:
+      - 7
     ldflags:
       - -s -w -X go.agrim.dev/hashmatch/cmd.version=v{{.Version}}
+
+  - id: windows
+    goos:
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X go.agrim.dev/hashmatch/cmd.version=v{{.Version}}
+
+  - id: osx
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X go.agrim.dev/hashmatch/cmd.version=v{{.Version}}
+
 archives:
   - name_template: >-
       {{ .ProjectName }}_
@@ -29,6 +55,7 @@ archives:
     format_overrides:
       - goos: windows
         formats: ["zip"]
+
 checksum:
   name_template: 'checksums.txt'
 snapshot:
