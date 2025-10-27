@@ -1,7 +1,12 @@
-# This is an example .goreleaser.yml file with some sane defaults.
-# Make sure to check the documentation at http://goreleaser.com
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+
+# The lines below are called `modelines`. See `:help modeline`
+# Feel free to remove those if you don't want/need to use them.
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
+
 version: 2
-project_name: hashmatch
 
 before:
   hooks:
@@ -9,46 +14,30 @@ before:
     - go mod tidy
     # you may remove this if you don't need go generate
     - go generate ./...
+
 builds:
   - env:
       - CGO_ENABLED=0
-  - id: linux
     goos:
       - linux
-    goarch:
-      - amd64
-      - arm64
-      - arm
-      - ppc64le
-      - s390x
-    goarm:
-      - 7
-    flags:
-      - -trimpath
-    ldflags:
-      - -s -w -X go.agrim.dev/hashmatch/cmd.version=v{{.Version}}
-
-  - id: windows
-    goos:
       - windows
-    goarch:
-      - amd64
-      - arm64
-    flags:
-      - -trimpath
-    ldflags:
-      - -s -w -X go.agrim.dev/hashmatch/cmd.version=v{{.Version}}
-
-  - id: osx
-    goos:
       - darwin
-    goarch:
-      - amd64
-      - arm64
-    flags:
-      - -trimpath
-    ldflags:
-      - -s -w -X go.agrim.dev/hashmatch/cmd.version=v{{.Version}}
+
+archives:
+  - formats: [tar.gz]
+    # this name template makes the OS and Arch compatible with the results of `uname`.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
 checksum:
   name_template: 'checksums.txt'
 snapshot:
@@ -59,6 +48,7 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+
 brews:
   - name: hashmatch
     repository:
@@ -71,6 +61,7 @@ brews:
     description: A simple cli tool to generate file hashes and match them.
     test: |
       system "hashmatch -v"
+
 scoops:
   -
     repository:
@@ -81,3 +72,10 @@ scoops:
       email: dev@agrimasthana.com
     commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
     license: Apache-2.0
+
+release:
+  footer: >-
+
+    ---
+
+    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
