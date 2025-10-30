@@ -1,4 +1,4 @@
-PACKAGE := github.com/agrimrules/hashmatch
+PACKAGE := go.agrim.dev/hashmatch
 VERSION ?= $(shell git describe --abbrev=0 --tags)
 
 default: build

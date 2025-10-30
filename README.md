@@ -28,7 +28,7 @@ scoop install agrimrules/hashmatch
 
 * Install via the golang toolchain
 ```shell
-go get -u github.com/agrimrules/hashmatch
+go get -u go.agrim.dev/hashmatch
 ```
 
 * Binaries are available at the [Releases](https://github.com/agrimrules/hashmatch/releases) page, download the necessary binary for your platform and add it to your `$PATH`

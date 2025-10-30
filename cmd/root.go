@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/agrimrules/hashmatch/utils"
+	"go.agrim.dev/hashmatch/utils"
 	"github.com/spf13/cobra"
 )
 
